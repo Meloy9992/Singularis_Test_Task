@@ -38,9 +38,18 @@ namespace Singularis_Test_Task.Controllers
         }
 
 
-/*        public IActionResult Index()
+        [HttpDelete("{id}")]
+        public IActionResult Delete(int id)
         {
-            return View();
-        }*/
+            var user = users.SingleOrDefault(u => u.Id == id);
+
+            if(user == null)
+            {
+                return NotFound();
+            }
+
+            users.Remove(user);
+            return Ok();
+        }
     }
 }
