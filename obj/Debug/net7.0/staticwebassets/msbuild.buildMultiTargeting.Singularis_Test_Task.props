@@ -1,0 +1,3 @@
+﻿<Project>
+  <Import Project="..\build\Singularis_Test_Task.props" />
+</Project>

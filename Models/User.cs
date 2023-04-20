@@ -5,6 +5,9 @@ namespace Singularis_Test_Task.Models
     public class User
     {
         [Required]
+        public long Id { get; set; }
+
+        [Required]
         public String email { get; set; }
 
         [Required]
