@@ -90,7 +90,7 @@ namespace Singularis_Test_Task.DAO.Implements
 
         public User getUserById(long id)
         {
-            string commandText = $"SELECT * FROM {User.TABLE_NAME} WHERE id_user = {id}"; // Получение имени ьаблицы и создание строки запроса
+            string commandText = $"SELECT * FROM {User.TABLE_NAME} WHERE id_user = {id}"; // Получение имени таблицы и создание строки запроса
 
             NpgsqlCommand com = new NpgsqlCommand(commandText, connection); // Создание экземпляра объекта NpgsqlCommand
             NpgsqlDataReader reader; // Создание reader'а
@@ -113,9 +113,25 @@ namespace Singularis_Test_Task.DAO.Implements
             return user;
         }
 
-        public void updateUserById(long id)
+        public void updateUserById(long id, User user)
         {
-            throw new NotImplementedException();
+            string commandText = $"UPDATE {User.TABLE_NAME} SET email = " +
+                $"@email, first_name = @first_name," +
+                $"last_name = @last_name, date_birthday = @date_birthday, " +
+                $"phone_number = @phone_number, address = @address WHERE id_user = {id}"; // Получение имени таблицы и создание строки запроса
+
+            using (var cmd = new NpgsqlCommand(commandText, connection))
+            {
+                cmd.Parameters.AddWithValue("id_user", user.id);
+                cmd.Parameters.AddWithValue("email", user.email);
+                cmd.Parameters.AddWithValue("first_name",user.firstName);
+                cmd.Parameters.AddWithValue("last_name", user.lastName);
+                cmd.Parameters.AddWithValue("date_birthday", user.dateBirthday);
+                cmd.Parameters.AddWithValue("phone_number", user.phoneNumber);
+                cmd.Parameters.AddWithValue("address", user.address);
+
+                cmd.ExecuteNonQuery();
+            }
         }
 
         private static User ReadUsers(NpgsqlDataReader reader)

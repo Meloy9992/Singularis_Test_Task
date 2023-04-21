@@ -34,9 +34,9 @@ namespace Singularis_Test_Task.Services.Implements
             return _userDao.getUserById(id);
         }
 
-        public void updateUserById(long id)
+        public void updateUserById(long id, User user)
         {
-            _userDao.updateUserById(id);
+            _userDao.updateUserById(id, user);
         }
     }
 }

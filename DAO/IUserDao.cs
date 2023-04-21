@@ -10,7 +10,7 @@ namespace Singularis_Test_Task.DAO
 
         public User getUserById(long id);
 
-        public void updateUserById(long id);
+        public void updateUserById(long id, User user);
 
         public HttpStatusCode deleteUserById(long id);
 
