@@ -35,7 +35,8 @@ namespace Singularis_Test_Task.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            return NotFound();
+            _userService.deleteUserById(id); 
+            return Ok();
         }
 
         [HttpPut("{id}")]

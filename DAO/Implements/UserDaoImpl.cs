@@ -47,15 +47,14 @@ namespace Singularis_Test_Task.DAO.Implements
 
         public HttpStatusCode deleteUserById(long id)
         {
-/*            var user = users.SingleOrDefault(u => u.id == id);
-            if (user == null)
-            {
-                return HttpStatusCode.NotFound;
-            }
+            string commandText = $"DELETE FROM {User.TABLE_NAME} WHERE id_user = {id}";
 
-            users.Remove(user);
-*/
-            return HttpStatusCode.OK;
+            using(var cmd =  new NpgsqlCommand(commandText, connection))
+            {
+                cmd.Parameters.AddWithValue("id_user", id);
+                cmd.ExecuteNonQuery();
+                return HttpStatusCode.OK;
+            }
         }
 
         public List<User> getBriefInformation()
