@@ -5,7 +5,7 @@ namespace Singularis_Test_Task.Models
     public class User
     {
         [Required]
-        public long Id { get; set; }
+        public long id { get; set; }
 
         [Required]
         public String email { get; set; }
@@ -24,5 +24,18 @@ namespace Singularis_Test_Task.Models
 
         [Required]
         public String address { get; set; }
+
+
+        public User (long id, String email, String firstName,
+            String lastName, String dateBirthday, String phoneNumber, String address)
+        {
+            id = id;
+            email = email;
+            firstName = firstName;
+            lastName = lastName;
+            dateBirthday = dateBirthday;
+            phoneNumber = phoneNumber;
+            address = address;
+        }
     }
 }
