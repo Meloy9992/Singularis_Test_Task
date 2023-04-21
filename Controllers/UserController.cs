@@ -21,7 +21,7 @@ namespace Singularis_Test_Task.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(int id)
         {
-            var user = users.SingleOrDefault(user => user.Id == id);
+            User user = null;
 
             if (user == null)
             {
@@ -35,7 +35,7 @@ namespace Singularis_Test_Task.Controllers
         [HttpDelete("{id}")]
         public IActionResult Delete(int id)
         {
-            
+            return NotFound();
         }
     }
 }

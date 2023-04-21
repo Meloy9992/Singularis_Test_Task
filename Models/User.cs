@@ -4,6 +4,8 @@ namespace Singularis_Test_Task.Models
 {
     public class User
     {
+        public const string TABLE_NAME = "users_singularis";
+
         [Required]
         public long id { get; set; }
 
@@ -36,6 +38,10 @@ namespace Singularis_Test_Task.Models
             dateBirthday = dateBirthday;
             phoneNumber = phoneNumber;
             address = address;
+        }
+
+        public User()
+        {
         }
     }
 }
