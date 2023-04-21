@@ -2,6 +2,7 @@
 using Singularis_Test_Task.DAO.Implements;
 using Singularis_Test_Task.Models;
 using Singularis_Test_Task.Services;
+using System.ComponentModel.DataAnnotations;
 
 namespace Singularis_Test_Task.Controllers
 {
@@ -45,6 +46,21 @@ namespace Singularis_Test_Task.Controllers
             _userService.updateUserById(id, user);
 
             return Ok();
+        }
+
+        [HttpPost]
+        public IActionResult Post([Required] String email, [Required] String firstName,
+           [Required] String lastName, [Required] String dateBirthday, [Required] String phoneNumber, [Required] String address)
+        {
+
+            if (!ModelState.IsValid)
+            {
+                return BadRequest(ModelState);
+            }
+
+            _userService.createUser(new User(email, firstName, lastName, dateBirthday, phoneNumber, address));
+
+            return Ok(_userService.GetLastUsersIndex());
         }
     }
 }

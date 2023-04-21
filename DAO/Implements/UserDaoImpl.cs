@@ -25,23 +25,22 @@ namespace Singularis_Test_Task.DAO.Implements
             connection.Open();
         }
 
-        public async void createUser(User user)
+        public void createUser(User user)
         {
             string commandText = $"INSERT INTO {User.TABLE_NAME} " +
-            $"(id, email, firstName, lastName, dateBirthday, phoneNumber, address) " +
-            $"VALUES (@id_user, @email, @first_name, @last_name, @date_birthday, @phone_number, @address)";
+            $"(email, first_name, last_name, date_birthday, phone_number, address) " +
+            $"VALUES (@email, @first_name, @last_name, @date_birthday, @phone_number, @address)";
 
-            await using (var cmd = new NpgsqlCommand(commandText, connection))
+             using (var cmd = new NpgsqlCommand(commandText, connection))
             {
-                cmd.Parameters.AddWithValue("id_user", user.id);
                 cmd.Parameters.AddWithValue("email", user.email);
                 cmd.Parameters.AddWithValue("first_name", user.firstName);
                 cmd.Parameters.AddWithValue("last_name", user.lastName);
-                cmd.Parameters.AddWithValue("ddate_birthday", user.dateBirthday);
+                cmd.Parameters.AddWithValue("date_birthday", user.dateBirthday);
                 cmd.Parameters.AddWithValue("phone_number", user.phoneNumber);
                 cmd.Parameters.AddWithValue("address", user.address);
 
-                await cmd.ExecuteNonQueryAsync();
+                 cmd.ExecuteNonQuery();
             }
         }
 
@@ -155,5 +154,34 @@ namespace Singularis_Test_Task.DAO.Implements
             }; // Присвоение объекту User полей
             return user;
         }
+
+        public long GetLastUsersIndex()
+        {
+            // TODO: Подумать как можно переделать получение последнего индекса объекта
+            
+            string commandText = $"SELECT last_value FROM {User.SEQUENCE_NAME}";
+
+            NpgsqlCommand com = new NpgsqlCommand(commandText, connection); // Создание экземпляра объекта NpgsqlCommand
+            NpgsqlDataReader reader; // Создание reader'а
+            reader = com.ExecuteReader();
+            long last_index = 0l;
+            while (reader.Read())
+            {
+                try
+                {
+                    last_index  = (long) reader["last_value"];
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message); // TODO: Добавить логгирование
+                    connection.Close(); // Закрыть подключение к БД
+                }
+
+            }
+            connection.Close(); // Закрыть подключение к БД
+
+            return last_index;
+        }
     }
+
 }

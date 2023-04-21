@@ -1,4 +1,7 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using Microsoft.EntityFrameworkCore;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+using System.Xml.Linq;
 
 namespace Singularis_Test_Task.Models
 {
@@ -6,7 +9,10 @@ namespace Singularis_Test_Task.Models
     {
         public const string TABLE_NAME = "users_singularis";
 
+        public const string SEQUENCE_NAME = "users_singularis_id_user_seq";
+
         [Required]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long id { get; set; }
 
         [Required]
@@ -31,13 +37,24 @@ namespace Singularis_Test_Task.Models
         public User (long id, String email, String firstName,
             String lastName, String dateBirthday, String phoneNumber, String address)
         {
-            id = id;
-            email = email;
-            firstName = firstName;
-            lastName = lastName;
-            dateBirthday = dateBirthday;
-            phoneNumber = phoneNumber;
-            address = address;
+            this.id = id;
+            this.email = email;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.dateBirthday = dateBirthday;
+            this.phoneNumber = phoneNumber;
+            this.address = address;
+        }
+
+        public User(String email, String firstName, 
+            String lastName, String dateBirthday, String phoneNumber, String address)
+        {
+            this.email = email;
+            this.firstName = firstName;
+            this.lastName = lastName;
+            this.dateBirthday = dateBirthday;
+            this.phoneNumber = phoneNumber;
+            this.address = address;
         }
 
         public User()

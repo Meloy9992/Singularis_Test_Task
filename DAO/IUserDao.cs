@@ -15,5 +15,7 @@ namespace Singularis_Test_Task.DAO
         public HttpStatusCode deleteUserById(long id);
 
         public void createUser(User user);
+
+        public long GetLastUsersIndex();
     }
 }

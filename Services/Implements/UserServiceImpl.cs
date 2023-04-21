@@ -38,5 +38,10 @@ namespace Singularis_Test_Task.Services.Implements
         {
             _userDao.updateUserById(id, user);
         }
+
+        public long GetLastUsersIndex()
+        {
+           return _userDao.GetLastUsersIndex();
+        }
     }
 }
