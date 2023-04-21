@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Logging;
 using Npgsql;
 using Singularis_Test_Task.Models;
 using Singularis_Test_Task.Services;
@@ -59,37 +60,57 @@ namespace Singularis_Test_Task.DAO.Implements
 
         public List<User> getBriefInformation()
         {
-            Console.WriteLine("Начало программы Nachalo programmy");
-            string commandText = $"SELECT * FROM {User.TABLE_NAME}";
 
-            List<User> users = new List<User>();
+            // TODO: Переделать получение пользователя на сокращенную информацию
+            string commandText = $"SELECT * FROM {User.TABLE_NAME}"; // Получение имени ьаблицы и создание строки запроса
 
-            NpgsqlCommand com = new NpgsqlCommand(commandText, connection);
-           // connection.Open();
-            NpgsqlDataReader reader;
+            List<User> users = new List<User>(); // Создание пустого списка
+
+            NpgsqlCommand com = new NpgsqlCommand(commandText, connection); // Создание экземпляра объекта NpgsqlCommand
+            NpgsqlDataReader reader; // Создание reader'а
             reader = com.ExecuteReader();
 
             while (reader.Read())
             {
                 try
                 {
-                    Console.WriteLine("Nachalo");
-                    User user = ReadUsers(reader);
-                    users.Add(user);
-                    Console.WriteLine(user.firstName);
+                    User user = ReadUsers(reader); // Прочитать Пользователя из бд
+                    users.Add(user); // Добавить пользователя в список
                 }
-                catch { }
+                catch(Exception e) 
+                {
+                    Console.WriteLine(e.Message); // TODO: Добавить логгирование
+                }
 
             }
-            connection.Close();
-            
+            connection.Close(); // Закрыть подключение к БД
 
             return users;
         }
 
         public User getUserById(long id)
         {
-            throw new NotImplementedException();
+            string commandText = $"SELECT * FROM {User.TABLE_NAME} WHERE id_user = {id}"; // Получение имени ьаблицы и создание строки запроса
+
+            NpgsqlCommand com = new NpgsqlCommand(commandText, connection); // Создание экземпляра объекта NpgsqlCommand
+            NpgsqlDataReader reader; // Создание reader'а
+            reader = com.ExecuteReader();
+            User user = null;
+            while (reader.Read())
+            {
+                try
+                {
+                   user = ReadUsers(reader); // Прочитать Пользователя из бд
+                }
+                catch (Exception e)
+                {
+                    Console.WriteLine(e.Message); // TODO: Добавить логгирование
+                }
+
+            }
+            connection.Close(); // Закрыть подключение к БД
+
+            return user;
         }
 
         public void updateUserById(long id)
@@ -97,15 +118,15 @@ namespace Singularis_Test_Task.DAO.Implements
             throw new NotImplementedException();
         }
 
-        public static User ReadUsers(NpgsqlDataReader reader)
+        private static User ReadUsers(NpgsqlDataReader reader)
         {
-            long? id = reader["id_user"] as long?;
-            string? email = reader["email"] as string;
-            string? firstName = reader["first_name"] as string;
-            string? lastName = reader["last_name"] as string;
-            string? dateBirthday = reader["date_birthday"] as string;
-            string? phoneNumber = reader["phone_number"] as string;
-            string? address = reader["address"] as string;
+            long? id = reader["id_user"] as long?; // прочесть параметр id
+            string? email = reader["email"] as string; // прочесть параметр email
+            string? firstName = reader["first_name"] as string; // прочесть параметр first_name
+            string? lastName = reader["last_name"] as string; // прочесть параметр last_name
+            string? dateBirthday = reader["date_birthday"] as string; // прочесть параметр date_birthday
+            string? phoneNumber = reader["phone_number"] as string; // прочесть параметр phone_number
+            string? address = reader["address"] as string; // прочесть параметр address
 
             User user = new()
             {
@@ -116,7 +137,7 @@ namespace Singularis_Test_Task.DAO.Implements
                 dateBirthday = dateBirthday,
                 phoneNumber = phoneNumber,
                 address = address
-            };
+            }; // Присвоение объекту User полей
             return user;
         }
     }

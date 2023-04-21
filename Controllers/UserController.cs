@@ -19,9 +19,9 @@ namespace Singularis_Test_Task.Controllers
         public IEnumerable<User> Get() => _userService.getBriefInformation();
 
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Get(long id)
         {
-            User user = null;
+            User user = _userService.getUserById(id);
 
             if (user == null)
             {

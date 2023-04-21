@@ -1,3 +1,4 @@
+using Microsoft.Extensions.Logging;
 using Singularis_Test_Task.DAO;
 using Singularis_Test_Task.DAO.Implements;
 using Singularis_Test_Task.Services;
