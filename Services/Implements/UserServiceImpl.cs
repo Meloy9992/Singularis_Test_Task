@@ -1,4 +1,5 @@
-﻿using Singularis_Test_Task.DAO;
+﻿using Microsoft.AspNetCore.Mvc;
+using Singularis_Test_Task.DAO;
 using Singularis_Test_Task.Models;
 using System.Net;
 
@@ -42,6 +43,16 @@ namespace Singularis_Test_Task.Services.Implements
         public long GetLastUsersIndex()
         {
            return _userDao.GetLastUsersIndex();
+        }
+
+        public HttpContent GetUsersExportJson()
+        {
+            return  _userDao.GetUsersExportJson();
+        }
+
+        public void GetUsersImportJson()
+        {
+            _userDao.GetUsersImportJson();
         }
     }
 }

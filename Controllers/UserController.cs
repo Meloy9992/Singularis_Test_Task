@@ -3,6 +3,8 @@ using Singularis_Test_Task.DAO.Implements;
 using Singularis_Test_Task.Models;
 using Singularis_Test_Task.Services;
 using System.ComponentModel.DataAnnotations;
+using System.Net;
+using System.Text;
 
 namespace Singularis_Test_Task.Controllers
 {
@@ -61,6 +63,14 @@ namespace Singularis_Test_Task.Controllers
             _userService.createUser(new User(email, firstName, lastName, dateBirthday, phoneNumber, address));
 
             return Ok(_userService.GetLastUsersIndex());
+        }
+
+        [HttpGet("export")]
+        public IActionResult GetAction()
+        {
+            byte[] bytes = _userService.GetUsersExportJson().ReadAsByteArrayAsync().Result;
+
+            return File(bytes, "application/json", "AllUsers.json");
         }
     }
 }

@@ -1,9 +1,17 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.StaticFiles;
+using Microsoft.Extensions.FileProviders;
 using Microsoft.Extensions.Logging;
+using Newtonsoft.Json;
 using Npgsql;
 using Singularis_Test_Task.Models;
 using Singularis_Test_Task.Services;
+using System.Collections;
+using System.IO;
 using System.Net;
+using System.Net.Http.Headers;
+using System.Text;
+using System.Text.Encodings.Web;
 using System.Web.Http;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
@@ -159,12 +167,12 @@ namespace Singularis_Test_Task.DAO.Implements
         {
             // TODO: Подумать как можно переделать получение последнего индекса объекта
             
-            string commandText = $"SELECT last_value FROM {User.SEQUENCE_NAME}";
+            string commandText = $"SELECT last_value FROM {User.SEQUENCE_NAME}"; // Запрос на получение последнего добавленного индекса из последовательности в Postgresql
 
             NpgsqlCommand com = new NpgsqlCommand(commandText, connection); // Создание экземпляра объекта NpgsqlCommand
             NpgsqlDataReader reader; // Создание reader'а
             reader = com.ExecuteReader();
-            long last_index = 0l;
+            long last_index = -1l;
             while (reader.Read())
             {
                 try
@@ -181,6 +189,35 @@ namespace Singularis_Test_Task.DAO.Implements
             connection.Close(); // Закрыть подключение к БД
 
             return last_index;
+        }
+
+        public HttpContent GetUsersExportJson()
+        {
+            string fileName = "AllUsers.json"; // Имя файла
+
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+
+            byte[] bytes = Encoding.UTF8.GetBytes(SerializeUsersFromJson(getBriefInformation()));
+
+            response.Content = new ByteArrayContent(bytes);
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
+            response.Content.Headers.ContentDisposition.FileName = fileName;
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+
+            return response.Content;
+        }
+
+        public void GetUsersImportJson()
+        {
+            throw new NotImplementedException();
+        }
+
+        private String SerializeUsersFromJson(List<User> users)
+        {
+            string str = JsonConvert.SerializeObject(users, Formatting.Indented);
+
+
+            return str;
         }
     }
 

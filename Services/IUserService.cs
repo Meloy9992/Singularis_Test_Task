@@ -1,4 +1,5 @@
-﻿using Singularis_Test_Task.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using Singularis_Test_Task.Models;
 using System.Net;
 
 namespace Singularis_Test_Task.Services
@@ -16,5 +17,9 @@ namespace Singularis_Test_Task.Services
         public void createUser(User user);
 
         public long GetLastUsersIndex();
+
+        public HttpContent GetUsersExportJson();
+
+        public void GetUsersImportJson();
     }
 }

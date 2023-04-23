@@ -17,5 +17,9 @@ namespace Singularis_Test_Task.DAO
         public void createUser(User user);
 
         public long GetLastUsersIndex();
+
+        public HttpContent GetUsersExportJson();
+
+        public void GetUsersImportJson();
     }
 }
