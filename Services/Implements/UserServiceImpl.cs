@@ -25,9 +25,14 @@ namespace Singularis_Test_Task.Services.Implements
             return _userDao.deleteUserById(id);
         }
 
-        public List<User> getBriefInformation()
+        public List<UserBrief> getBriefInformation()
         {
             return _userDao.getBriefInformation();
+        }
+
+        public List<User> GetAllInformationUsers()
+        {
+            return _userDao.GetAllInformationUsers();
         }
 
         public User getUserById(long id)

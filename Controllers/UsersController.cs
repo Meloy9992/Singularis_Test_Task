@@ -9,17 +9,17 @@ using System.Text;
 namespace Singularis_Test_Task.Controllers
 {
     [Route("[controller]")]
-    public class UserController : Controller
+    public class UsersController : Controller
     {
         private readonly IUserService _userService;
 
-        public UserController(IUserService userService)
+        public UsersController(IUserService userService)
         {
             _userService = userService;
         }
 
         [HttpGet]
-        public IEnumerable<User> Get() => _userService.getBriefInformation();
+        public IEnumerable<UserBrief> Get() => _userService.getBriefInformation();
 
         [HttpGet("{id}")]
         public IActionResult Get(long id)
@@ -51,8 +51,8 @@ namespace Singularis_Test_Task.Controllers
         }
 
         [HttpPost]
-        public IActionResult Post([Required] String email, [Required] String firstName,
-           [Required] String lastName, [Required] String dateBirthday, [Required] String phoneNumber, [Required] String address)
+        public IActionResult Post(String email, [Required] String firstName,
+           [Required] String lastName, String dateBirthday, String phoneNumber, String address)
         {
 
             if (!ModelState.IsValid)

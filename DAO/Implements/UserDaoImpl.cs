@@ -64,10 +64,41 @@ namespace Singularis_Test_Task.DAO.Implements
             }
         }
 
-        public List<User> getBriefInformation()
+        public List<UserBrief> getBriefInformation()
         {
 
             // TODO: Переделать получение пользователя на сокращенную информацию
+            string commandText = $"SELECT id_user, first_name, last_name FROM {User.TABLE_NAME}"; // Получение имени ьаблицы и создание строки запроса
+
+            List<UserBrief> users = new List<UserBrief>(); // Создание пустого списка
+
+            NpgsqlCommand com = new NpgsqlCommand(commandText, connection); // Создание экземпляра объекта NpgsqlCommand
+            NpgsqlDataReader reader; // Создание reader'а
+            reader = com.ExecuteReader();
+
+            while (reader.Read())
+            {
+                try
+                {
+                    UserBrief user = ReadBriefUsers(reader); // Прочитать Пользователя из бд
+                    
+                    users.Add(user); // Добавить пользователя в список
+                }
+                catch(Exception e) 
+                {
+                    Console.WriteLine(e.Message); // TODO: Добавить логгирование
+                }
+
+            }
+            connection.Close(); // Закрыть подключение к БД
+
+
+
+            return users;
+        }
+
+        public List<User> GetAllInformationUsers()
+        {
             string commandText = $"SELECT * FROM {User.TABLE_NAME}"; // Получение имени ьаблицы и создание строки запроса
 
             List<User> users = new List<User>(); // Создание пустого списка
@@ -83,7 +114,7 @@ namespace Singularis_Test_Task.DAO.Implements
                     User user = ReadUsers(reader); // Прочитать Пользователя из бд
                     users.Add(user); // Добавить пользователя в список
                 }
-                catch(Exception e) 
+                catch (Exception e)
                 {
                     Console.WriteLine(e.Message); // TODO: Добавить логгирование
                 }
@@ -163,6 +194,21 @@ namespace Singularis_Test_Task.DAO.Implements
             return user;
         }
 
+        private static UserBrief ReadBriefUsers(NpgsqlDataReader reader)
+        {
+            long? id = reader["id_user"] as long?; // прочесть параметр id
+            string? firstName = reader["first_name"] as string; // прочесть параметр first_name
+            string? lastName = reader["last_name"] as string; // прочесть параметр last_name
+
+            UserBrief user = new()
+            {
+                id = id.Value,
+                firstName = firstName,
+                lastName = lastName
+            }; // Присвоение объекту User полей
+            return user;
+        }
+
         public long GetLastUsersIndex()
         {
             // TODO: Подумать как можно переделать получение последнего индекса объекта
@@ -195,14 +241,14 @@ namespace Singularis_Test_Task.DAO.Implements
         {
             string fileName = "AllUsers.json"; // Имя файла
 
-            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK);
+            HttpResponseMessage response = new HttpResponseMessage(HttpStatusCode.OK); //Добавление кода сообщения
 
-            byte[] bytes = Encoding.UTF8.GetBytes(SerializeUsersFromJson(getBriefInformation()));
+            byte[] bytes = Encoding.UTF8.GetBytes(SerializeUsersFromJson(GetAllInformationUsers())); // парсинг списка пользователей в json и в массив байтов
 
-            response.Content = new ByteArrayContent(bytes);
-            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment");
-            response.Content.Headers.ContentDisposition.FileName = fileName;
-            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json");
+            response.Content = new ByteArrayContent(bytes); // добавление массива байтов в response
+            response.Content.Headers.ContentDisposition = new System.Net.Http.Headers.ContentDispositionHeaderValue("attachment"); // ?
+            response.Content.Headers.ContentDisposition.FileName = fileName; // Добавление имени файла
+            response.Content.Headers.ContentType = new MediaTypeHeaderValue("application/json"); // Добавление MIME типа файлу
 
             return response.Content;
         }
@@ -215,7 +261,6 @@ namespace Singularis_Test_Task.DAO.Implements
         private String SerializeUsersFromJson(List<User> users)
         {
             string str = JsonConvert.SerializeObject(users, Formatting.Indented);
-
 
             return str;
         }

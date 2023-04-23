@@ -6,7 +6,9 @@ namespace Singularis_Test_Task.DAO
 {
     public interface IUserDao
     {
-        public List<User> getBriefInformation();
+        public List<UserBrief> getBriefInformation();
+
+        public List<User> GetAllInformationUsers();
 
         public User getUserById(long id);
 

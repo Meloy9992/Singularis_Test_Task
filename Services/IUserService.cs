@@ -6,7 +6,9 @@ namespace Singularis_Test_Task.Services
 {
     public interface IUserService
     {
-        public List<User> getBriefInformation();
+        public List<UserBrief> getBriefInformation();
+
+        public List<User> GetAllInformationUsers();
 
         public User getUserById(long id);
 

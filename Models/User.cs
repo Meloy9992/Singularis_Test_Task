@@ -15,7 +15,6 @@ namespace Singularis_Test_Task.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public long id { get; set; }
 
-        [Required]
         public String email { get; set; }
 
         [Required]
@@ -24,13 +23,10 @@ namespace Singularis_Test_Task.Models
         [Required]
         public String lastName { get; set; }
 
-        [Required]
         public String dateBirthday { get; set; }
 
-        [Required]
         public String phoneNumber { get; set; }
 
-        [Required]
         public String address { get; set; }
 
 
