@@ -55,9 +55,9 @@ namespace Singularis_Test_Task.Services.Implements
             return  _userDao.GetUsersExportJson();
         }
 
-        public void GetUsersImportJson()
+        public void GetUsersImportJson(IFormFile file)
         {
-            _userDao.GetUsersImportJson();
+            _userDao.GetUsersImportJson(file);
         }
     }
 }

@@ -72,5 +72,13 @@ namespace Singularis_Test_Task.Controllers
 
             return File(bytes, "application/json", "AllUsers.json");
         }
+
+        [HttpPost("import")]
+        public IActionResult GetAction(IFormFile file)
+        {
+            _userService.GetUsersImportJson(file);
+
+            return Ok();
+        }
     }
 }

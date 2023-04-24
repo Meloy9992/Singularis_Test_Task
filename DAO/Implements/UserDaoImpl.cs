@@ -11,6 +11,7 @@ using System.IO;
 using System.Net;
 using System.Net.Http.Headers;
 using System.Text;
+using System.Linq;
 using System.Text.Encodings.Web;
 using System.Web.Http;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
@@ -67,7 +68,6 @@ namespace Singularis_Test_Task.DAO.Implements
         public List<UserBrief> getBriefInformation()
         {
 
-            // TODO: Переделать получение пользователя на сокращенную информацию
             string commandText = $"SELECT id_user, first_name, last_name FROM {User.TABLE_NAME}"; // Получение имени ьаблицы и создание строки запроса
 
             List<UserBrief> users = new List<UserBrief>(); // Создание пустого списка
@@ -253,9 +253,29 @@ namespace Singularis_Test_Task.DAO.Implements
             return response.Content;
         }
 
-        public void GetUsersImportJson()
+        public async void GetUsersImportJson(IFormFile file)
         {
-            throw new NotImplementedException();
+            var filePath = Path.Combine(@"App_Data",".json");
+            new FileInfo(filePath).Directory?.Create();
+
+            List<User> users;
+            using FileStream fs = new FileStream(filePath, FileMode.Open);
+            {
+                int buferSize = (int)file.Length; //задаем размер буфера
+                byte[] buffer = new byte[buferSize];//выделяем память под буфер
+                while (true)
+                {
+                    int readCount = fs.Read(buffer, 0, buferSize);//пробуем считать buferSize из файла
+                    if (readCount == 0)
+                        break;
+                    users = JsonConvert.DeserializeObject<List<User>>(Encoding.Default.GetString(buffer)); // Преобразование json в список объектов
+                    foreach (var user in users)
+                    {
+                        createUser(user); // Создать пользователя в БД
+                    }
+                }
+
+            }
         }
 
         private String SerializeUsersFromJson(List<User> users)
@@ -265,5 +285,4 @@ namespace Singularis_Test_Task.DAO.Implements
             return str;
         }
     }
-
 }

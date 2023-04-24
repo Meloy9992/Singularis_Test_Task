@@ -22,6 +22,6 @@ namespace Singularis_Test_Task.Services
 
         public HttpContent GetUsersExportJson();
 
-        public void GetUsersImportJson();
+        public void GetUsersImportJson(IFormFile file);
     }
 }
