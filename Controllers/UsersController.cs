@@ -16,6 +16,7 @@ namespace Singularis_Test_Task.Controllers
         public UsersController(IUserService userService)
         {
             _userService = userService;
+            
         }
 
         [HttpGet]
@@ -24,30 +25,43 @@ namespace Singularis_Test_Task.Controllers
         [HttpGet("{id}")]
         public IActionResult Get(long id)
         {
-            User user = _userService.getUserById(id);
+            var user = _userService.getUserById(id);
 
             if (user == null)
             {
-                return NotFound();
+                return BadRequest();
             }
 
-            return Ok(user);
+            return Ok();
         }
 
 
         [HttpDelete("{id}")]
         public IActionResult Delete(long id)
         {
-            _userService.deleteUserById(id); 
-            return Ok();
+            try
+            {
+                _userService.deleteUserById(id);
+                return Ok();
+            }
+            catch(Exception ex) {return BadRequest(ex.Message); }
+           
         }
 
         [HttpPut("{id}")]
         public IActionResult Put(long id, User user) 
         {
-            _userService.updateUserById(id, user);
+            try
+            {
+                _userService.updateUserById(id, user);
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
-            return Ok();
+            return NotFound();
         }
 
         [HttpPost]
@@ -68,17 +82,33 @@ namespace Singularis_Test_Task.Controllers
         [HttpGet("export")]
         public IActionResult GetAction()
         {
-            byte[] bytes = _userService.GetUsersExportJson().ReadAsByteArrayAsync().Result;
+            try
+            {
+                byte[] bytes = _userService.GetUsersExportJson().ReadAsByteArrayAsync().Result;
+                return File(bytes, "application/json", "AllUsers.json");
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
 
-            return File(bytes, "application/json", "AllUsers.json");
+            
         }
 
         [HttpPost("import")]
         public IActionResult GetAction(IFormFile file)
         {
-            _userService.GetUsersImportJson(file);
 
-            return Ok();
+            try
+            {
+                _userService.GetUsersImportJson(file);
+
+                return Ok();
+            }
+            catch(Exceprion ex)
+            {
+                return BadRequest(ex);
+            }
         }
     }
 }

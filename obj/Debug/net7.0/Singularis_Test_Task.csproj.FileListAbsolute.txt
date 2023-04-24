@@ -40,5 +40,4 @@ C:\Users\allaa\source\repos\Singularis_Test_Task\Singularis_Test_Task\bin\Debug\
 C:\Users\allaa\source\repos\Singularis_Test_Task\Singularis_Test_Task\bin\Debug\net7.0\Newtonsoft.Json.Bson.dll
 C:\Users\allaa\source\repos\Singularis_Test_Task\Singularis_Test_Task\bin\Debug\net7.0\Npgsql.dll
 C:\Users\allaa\source\repos\Singularis_Test_Task\Singularis_Test_Task\bin\Debug\net7.0\Npgsql.EntityFrameworkCore.PostgreSQL.dll
-C:\Users\allaa\source\repos\Singularis_Test_Task\Singularis_Test_Task\bin\Debug\net7.0\AllUsers.json
 C:\Users\allaa\source\repos\Singularis_Test_Task\Singularis_Test_Task\bin\Debug\net7.0\App_Data\.json
