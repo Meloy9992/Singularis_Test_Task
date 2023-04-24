@@ -1,7 +1,7 @@
 # Singularis_Test_Task
 Singularis_Test_Task
  Тестовое задание в компанию Singularis Lab.
- Была создана база данных PostgreSQL. Файл експорта находится в корне проекта. Название: singularisBD.sql.
+ Была создана база данных PostgreSQL. Файл экспорта находится в корне проекта. Название: singularisBD.sql.
  
  
  
